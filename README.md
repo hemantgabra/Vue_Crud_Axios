@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # vue_axios
 
 ## Project setup
