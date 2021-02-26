@@ -1,12 +1,22 @@
 <template>
   <div>
-    <!-- <h1>All data {{ pData.length }}</h1>
-    <h2>{{ pData }}</h2> -->
-    <div v-for="post in posts" :key="post.id">
-      <h2>{{ post.title }}</h2>
-      <h2>{{ post.author }}</h2>
-    </div>
-    <!-- <h2>{{ posts }}</h2> -->
+    <ul>
+      <li>{{ dummyData }}</li>
+    </ul>
+    <ul>
+      <li><strong>ID</strong></li>
+      <li><strong>Email ID</strong></li>
+      <li><strong>First Name</strong></li>
+      <li><strong>Last Name</strong></li>
+      <li><strong>Image</strong></li>
+    </ul>
+    <ul v-for="printDummyData in dummyData" :key="printDummyData.id">
+      <li>{{ printDummyData.page }}</li>
+      <li>{{ printDummyData.email }}</li>
+      <li>{{ printDummyData.first_name }}</li>
+      <li>{{ printDummyData.last_name }}</li>
+      <li><img :src="printDummyData.avatar" /></li>
+    </ul>
   </div>
 </template>
 
@@ -17,44 +27,28 @@ export default {
   name: "ProductListing",
   data() {
     return {
-      posts: []
+      dummyData: null
     };
   },
-  // computed: {
-  //   title() {
-  //     return {
-  //       postTitle: this.posts.title
-  //     };
-  //   }
-  // },
   created() {
-    axios
-      .get("http://localhost:3000/posts")
-      .then(response => {
-        //console.log(response.data);
-        this.posts = response.data;
-      })
-      .catch(error => {
-        console.log("There was an error:" + error.response);
-      });
+    axios.get("https://reqres.in/api/users?page=1").then(response => {
+      this.dummyData = response.data;
+      //console.log(response.data);
+    });
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
 ul {
-  list-style-type: none;
-  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
 }
 li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+  border: 1px solid #e1e1e1;
+  width: 100%;
+  padding: 20px;
 }
 </style>
