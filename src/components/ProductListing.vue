@@ -1,21 +1,43 @@
 <template>
   <div>
-    <ul>
-      <li>{{ dummyData }}</li>
-    </ul>
-    <ul>
+    <nav
+      class="pagination is-small is-centered"
+      role="navigation"
+      aria-label="pagination"
+    >
+      <a class="pagination-previous">Previous</a>
+      <a class="pagination-next">Next page</a>
+      <ul class="pagination-list">
+        <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
+        <li>
+          <a
+            class="pagination-link is-current"
+            aria-label="Page 46"
+            aria-current="page"
+            >46</a
+          >
+        </li>
+        <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li>
+        <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+      </ul>
+    </nav>
+    <h1 class="title">All Data {{ listingData.length }}</h1>
+    <ul class="listing-data">
       <li><strong>ID</strong></li>
-      <li><strong>Email ID</strong></li>
-      <li><strong>First Name</strong></li>
-      <li><strong>Last Name</strong></li>
+      <li><strong>Title</strong></li>
       <li><strong>Image</strong></li>
     </ul>
-    <ul v-for="printDummyData in dummyData" :key="printDummyData.id">
-      <li>{{ printDummyData.page }}</li>
-      <li>{{ printDummyData.email }}</li>
-      <li>{{ printDummyData.first_name }}</li>
-      <li>{{ printDummyData.last_name }}</li>
-      <li><img :src="printDummyData.avatar" /></li>
+    <ul
+      class="listing-data"
+      v-for="printListingData in listingData.slice(0, 100)"
+      :key="printListingData.id"
+    >
+      <li>{{ printListingData.id }}</li>
+      <li>{{ printListingData.title }}</li>
+      <li><img :src="printListingData.thumbnailUrl" /></li>
     </ul>
   </div>
 </template>
@@ -27,13 +49,15 @@ export default {
   name: "ProductListing",
   data() {
     return {
-      dummyData: null
+      rowData: null,
+      listingData: null
     };
   },
   created() {
-    axios.get("https://reqres.in/api/users?page=1").then(response => {
-      this.dummyData = response.data;
-      //console.log(response.data);
+    axios.get("https://jsonplaceholder.typicode.com/photos").then(response => {
+      this.rowData = response.data;
+      this.listingData = response.data;
+      //console.log(this.listingData);
     });
   }
 };
@@ -41,12 +65,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-ul {
+ul.listing-data {
   list-style: none;
   display: flex;
   flex-wrap: nowrap;
 }
-li {
+ul.listing-data li {
   border: 1px solid #e1e1e1;
   width: 100%;
   padding: 20px;
