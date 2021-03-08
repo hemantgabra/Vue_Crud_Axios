@@ -1,30 +1,34 @@
 <template>
   <div>
     <nav
-      class="pagination is-small is-centered"
+      class="pagination is-small is-centered mr-5 ml-5"
       role="navigation"
       aria-label="pagination"
     >
       <a class="pagination-previous">Previous</a>
-      <a class="pagination-next">Next page</a>
+      <a class="pagination-next" @click="nextPageListing()">Next page</a>
       <ul class="pagination-list">
-        <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-        <li><span class="pagination-ellipsis">&hellip;</span></li>
-        <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
         <li>
-          <a
-            class="pagination-link is-current"
-            aria-label="Page 46"
-            aria-current="page"
+          <a class=" is-current pagination-link" aria-label="Goto page 1">1</a>
+        </li>
+        <!-- <li><span class="pagination-ellipsis">&hellip;</span></li> -->
+        <li><a class="pagination-link" aria-label="Goto page 45">2</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 86">3</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 86">4</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 86">5</a></li>
+        <!-- <li>
+          <a class="pagination-link" aria-label="Page 46" aria-current="page"
             >46</a
           >
         </li>
         <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-        <li><span class="pagination-ellipsis">&hellip;</span></li>
-        <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
+        <li><span class="pagination-ellipsis">&hellip;</span></li> -->
       </ul>
     </nav>
-    <h1 class="title">All Data {{ listingData.length }}</h1>
+    <h1 class="subtitle">
+      {{ firstIndexOfData }} - {{ firstLoadListingData.length }} From
+      {{ listingData.length }}
+    </h1>
     <ul class="listing-data">
       <li><strong>ID</strong></li>
       <li><strong>Title</strong></li>
@@ -32,7 +36,7 @@
     </ul>
     <ul
       class="listing-data"
-      v-for="printListingData in listingData.slice(0, 100)"
+      v-for="printListingData in firstLoadListingData"
       :key="printListingData.id"
     >
       <li>{{ printListingData.id }}</li>
@@ -49,16 +53,31 @@ export default {
   name: "ProductListing",
   data() {
     return {
-      rowData: null,
-      listingData: null
+      //rowData: null,
+      listingData: [],
+      firstIndexOfData: 1
     };
+  },
+  computed: {
+    firstLoadListingData() {
+      return this.listingData.slice(0, 100);
+    }
+  },
+  methods: {
+    nextPageListing() {
+      //alert(this.firstLoadListingData.length);
+      this.firstLoadListingData += 100;
+    }
   },
   created() {
     axios.get("https://jsonplaceholder.typicode.com/photos").then(response => {
-      this.rowData = response.data;
+      //this.rowData = response.data;
       this.listingData = response.data;
-      //console.log(this.listingData);
+      console.log(this.listingData);
     });
+    // .catch(err => {
+    //   this.error = err.data;
+    // });
   }
 };
 </script>
